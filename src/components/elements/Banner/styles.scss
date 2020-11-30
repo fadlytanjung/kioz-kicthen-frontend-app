@@ -1,0 +1,26 @@
+
+.banner-wrapper{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  box-sizing: border-box;
+  justify-content:space-between;
+  margin-bottom: 30px;
+  margin-left: -10px;
+  margin-right: -10px;
+  img{
+    align-items: center;
+    width:20.25rem;
+  }
+}
+
+@media screen and (max-width:991px){
+  .banner-wrapper{
+    display: inline;
+    margin-left: 0px;
+    margin-right: 0px;
+    img{
+      width: 324px;
+    }
+  }
+}

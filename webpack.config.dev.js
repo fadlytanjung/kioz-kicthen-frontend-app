@@ -68,11 +68,17 @@ export default {
         oneOf: [
           {
             test: /(\.css|\.scss|\.sass)$/,
-            resourceQuery: /^\?raw$/,
+            // resourceQuery: /^\?raw$/,
             use: [
               'style-loader',
               loaders.cssDev,
               loaders.postCssDev,
+              {
+                loader: "sass-loader",
+                options: {
+                  sourceMap: true
+                }
+              }
             ],
           },
           {

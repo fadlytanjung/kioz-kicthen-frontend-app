@@ -1,0 +1,56 @@
+@import './styles/base.scss';
+
+$primary: map-get(map-get($color, primary), base);
+$secondary: map-get(map-get($color, secondary), base);
+$success: map-get(map-get($color, alert), success);
+$error: map-get(map-get($color, alert), error);
+$warning: map-get(map-get($color, alert), warning);
+$info: map-get(map-get($color, alert), info);
+$white: map-get(map-get($color, secondary), lighter);
+
+:root {
+  --data-color-primary: #{$primary};
+  --data-color-secondary: #{$secondary};
+  --data-color-success: #{$success};
+  --data-color-error: #{$error};
+  --data-color-warning: #{$warning};
+  --data-color-info: #{$info};
+  --data-color-white: #{$white};
+  font-size: calc(100vw * 16 / 1440);
+}
+
+* {
+  /* animation: fade-in 0.2s ease-in-out; */
+  box-sizing: border-box;
+  font-family: 'Montserrat','Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+  line-height: 1.5;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+#app {
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+}
+
+@media only screen and (max-width: 48em) {
+  * {
+    line-height: 1.2;
+  }
+
+  :root {
+    font-size: calc(100vw * 16 / 360);
+  }
+}

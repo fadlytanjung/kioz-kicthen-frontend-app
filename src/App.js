@@ -39,14 +39,14 @@ const _checkAuth = () => {
 };
 
 const App = ({ history, store }) => {
-  const { Login } = pages;
-  const [isLoggedIn, shouldRender] = _checkAuth();
+  // const { Login } = pages;
+  // const [isLoggedIn, shouldRender] = _checkAuth();
 
-  const routeApp = isLoggedIn ? <Login /> :
-    (<Switch>
-      <Route exact path={'/'} component={pages.Home}/>
-      <Route component={pages.Error404} />
-    </Switch>);
+  // const routeApp = isLoggedIn ? <Login /> :
+  //   (<Switch>
+  //     <Route exact path={'/'} component={pages.Home}/>
+  //     <Route component={pages.Error404} />
+  //   </Switch>);
 
   // if (!shouldRender) {
   //   return (null);
@@ -57,9 +57,8 @@ const App = ({ history, store }) => {
       <main>
         <Router history={history}>
           <AppContextProvider>
-            {/* {routeApp} */}
             <Switch>
-              <Route exact path={'/'} component={pages.Home} />
+              <Route exact path={ROUTES.HOME()} component={pages.Home} />
               <Route component={pages.Error404} />
             </Switch>
           </AppContextProvider>

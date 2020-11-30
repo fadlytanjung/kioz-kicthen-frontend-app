@@ -1,0 +1,7 @@
+@function color($color-name) {
+  @return var(--data-color-#{$color-name});
+};
+
+@function pxToRem($size){
+  @return $size / 16px * 1rem;
+}

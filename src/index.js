@@ -2,9 +2,9 @@ import React from 'react';
 import configureStore, { history } from './store/configureStore';
 import { render } from 'react-dom';
 import App from './App';
-import 'typeface-roboto';
+import 'typeface-montserrat';
 import './favicon.ico';
-import './App.css';
+import './App.scss';
 
 const store = configureStore();
 
