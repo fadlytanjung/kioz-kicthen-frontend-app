@@ -111,6 +111,12 @@ export default {
               MiniCssExtractPlugin.loader,
               loaders.cssProd,
               loaders.postCssProd,
+              {
+                loader: "sass-loader",
+                options: {
+                  sourceMap: true
+                }
+              }
             ],
           },
           {
@@ -119,6 +125,12 @@ export default {
               MiniCssExtractPlugin.loader,
               loaders.cssModuleProd,
               loaders.postCssModuleProd,
+              {
+                loader: "sass-loader",
+                options: {
+                  sourceMap: true
+                }
+              }
             ],
           },
         ],
