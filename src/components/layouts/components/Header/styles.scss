@@ -39,9 +39,13 @@
         margin-right: 20px;
       }
       button:nth-child(1){
+      
         background-color: var(--data-color-white);
-        color:var(--data-color-primary);
+        .button:nth-child(1){
+          color:var(--data-color-primary);
+        }
       }
+          
       .cart-icon{
         padding: 4px 25px;
         margin-right: 25px;

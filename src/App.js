@@ -59,6 +59,7 @@ const App = ({ history, store }) => {
           <AppContextProvider>
             <Switch>
               <Route exact path={ROUTES.HOME()} component={pages.Home} />
+              <Route exact path={ROUTES.DETAIL(':slug')} component={pages.Detail} />
               <Route component={pages.Error404} />
             </Switch>
           </AppContextProvider>

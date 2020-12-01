@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
 import Banner from '../../components/elements/Banner';
 import ButtonCart from '../../components/elements/ButtonCart';
 import Pagebase from '../../components/layouts/Pagebase/user';
@@ -69,7 +70,7 @@ function Home() {
         <div className="container-small">
           <Banner />
           <div className="heading-wrapper">
-            <Typography bold tag="h5" variant="headline-medium">Produk Terbaik</Typography>
+            <Typography tag="h3" variant="headline-medium-bold">Produk Terbaik</Typography>
             <Dropdown
               handleClick={_handleClick.bind(this)}
               handleOpen={_handleOpen.bind()}
@@ -80,16 +81,20 @@ function Home() {
           </div>
           <div className="product-wrapper">
             {product.map((item) => {
-              return (<div className="product-item" key={item.id}>
-                <img src={item.image} />
-                <div className="product-desc">
-                  <Typography bold tag="h5" variant="headline-small">{item.name}</Typography>
-                  <Typography bold tag="p" variant="caption-bold">{item.display_price} <span>/ {item.unit}</span></Typography>
-                  {check(item.id) !== false ? <ButtonCart maxValue={item.stock}
-                    onClick={(num) => clickCart(num, item.id)} value={check(item.id).qty} /> :
-                    <Button onClick={() => addCart(item.id, 'add')} size="48" variant="primary">Beli</Button>}
+              const price = item.price - ((item.price * item.discount) / 100);
+              return (
+                <div className="product-item" key={item.id}>
+                  <Link to={`/product/${item.slug}`}><img src={item.image} /></Link>
+                  <div className="product-desc">
+                    <Link to={`/product/${item.slug}`}><Typography tag="h5" variant="headline-small-bold">{item.name}</Typography></Link>
+                    {item.discount > 0 && <Typography tag="h3" variant="caption-bold"><strike><span>{item.display_price}</span></strike></Typography>}
+                    <Typography tag="p" variant="caption-bold">Rp. {price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')} <span>/ {item.unit}</span></Typography>
+                    {check(item.id) !== false ? <ButtonCart maxValue={item.stock}
+                      onClick={(num) => clickCart(num, item.id)} value={check(item.id).qty} /> :
+                      <Button onClick={() => addCart(item.id, 'add')} size="48" variant="primary">Beli</Button>}
+                  </div>
                 </div>
-              </div>);
+              );
             })}
           </div>
         </div>

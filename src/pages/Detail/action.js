@@ -1,10 +1,10 @@
 import { ACTIONS, product } from '../../constants';
 
-export function fetchData() {
+export function getDetail(slug) {
   return dispatch => {
     dispatch({
-      type: ACTIONS.FETCH_PRODUCTS,
-      product: [...product]
+      type: ACTIONS.FETCH_PRODUCT,
+      detail: { ...product.filter(el=>el.slug===slug)[0] }
     });
   };
 }

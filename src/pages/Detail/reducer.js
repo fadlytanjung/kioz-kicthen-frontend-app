@@ -1,17 +1,17 @@
 import { ACTIONS } from '../../constants';
 
 const initialState = {
-  product: [],
+  detail: {},
 };
 
 export default function reducer(state = initialState, action) {
-  const { type, product } = action;
+  const { type, detail } = action;
 
   switch (type) {
-    case ACTIONS.FETCH_PRODUCTS:
+    case ACTIONS.FETCH_PRODUCT:
       return {
         ...state,
-        product,
+        detail,
       };
     default:
       return state;

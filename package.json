@@ -39,7 +39,7 @@
     "file-system": "^2.2.2",
     "fs": "0.0.1-security",
     "helmet": "^4.0.0",
-    "leanui-framework": "^1.0.13",
+    "leanui-framework": "^1.1.0",
     "moment": "^2.25.3",
     "moment-range": "^4.0.2",
     "query-string": "^6.12.1",

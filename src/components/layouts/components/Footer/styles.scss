@@ -33,9 +33,9 @@ footer{
     h3:first-child{
       margin-bottom: 22px;
     }
-    h5.headline-small{
-      color:$border-color;
-      margin-bottom: 12px;
+    h5.typography-headline-small{
+      color:$border-color !important;
+      margin-bottom: 12px !important;
     }
     .footer-sosmed{
       margin-top: 22px;

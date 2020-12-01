@@ -1,6 +1,6 @@
 const images = {
   anggur: '/assets/anggur.png',
-  
+  arrow_right:'/assets/arrow-right.svg',
   EXAMPLE: '/assets/.svg',
   banner1: '/assets/banner1.png',
   banner2: '/assets/banner2.png',

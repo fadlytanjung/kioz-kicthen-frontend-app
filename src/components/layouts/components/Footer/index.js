@@ -35,9 +35,9 @@ function Footer() {
     <footer>
       <div className="container-small wrapper-footer">
         <div className="footer-content">
-          <Typography bold
+          <Typography
             tag="h3"
-            variant="headline-large">Tentang KIOZ</Typography>
+            variant="headline-large-bold">Tentang KIOZ</Typography>
           <React.Fragment>
             {about.map((item, id) => (<Typography key={id} tag="h5" variant="headline-small" >
               {item.title}
@@ -45,9 +45,9 @@ function Footer() {
           </React.Fragment>
         </div>
         <div className="footer-content">
-          <Typography bold
+          <Typography
             tag="h3"
-            variant="headline-large">Terms {'&'} Condition</Typography>
+            variant="headline-large-bold">Terms {'&'} Condition</Typography>
           <React.Fragment>
             {terms.map((item, id) => (<Typography key={id} tag="h5" variant="headline-small" >
               {item.title}
@@ -60,9 +60,9 @@ function Footer() {
           </div>
         </div>
         <div className="footer-content downloadApp">
-          <Typography bold
+          <Typography
             tag="h3"
-            variant="headline-large">Download KIOZ</Typography>
+            variant="headline-large-bold">Download KIOZ</Typography>
           <img src={IMAGES.downloadApp} />
         </div>
       </div>
