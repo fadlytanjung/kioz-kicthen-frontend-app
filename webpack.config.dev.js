@@ -23,7 +23,13 @@ export default {
   output: {
     path: path.resolve(__dirname, 'dist'), // Note: Physical files are only output by the production build task `npm run build`.
     publicPath: '/',
-    filename: 'bundle.js'
+    filename: 'bundle.js',
+    chunkFilename: '[name].chunks.bundle.js',
+  },
+  optimization: {
+    splitChunks: {
+      chunks: 'all',
+    },
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
@@ -74,9 +80,9 @@ export default {
               loaders.cssDev,
               loaders.postCssDev,
               {
-                loader: "sass-loader",
+                loader: 'sass-loader',
                 options: {
-                  sourceMap: true
+                  sourceMap: true,
                 }
               }
             ],

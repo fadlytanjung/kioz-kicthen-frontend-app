@@ -10,7 +10,9 @@ export const cssDev = {
 export const cssProd = {
   loader: 'css-loader',
   options: {
-    sourceMap: true
+    modules: false,
+    sourceMap: true,
+    url: (url) => url.charAt(0) === '.',
   }
 };
 
@@ -32,7 +34,8 @@ export const cssModuleProd = {
   loader: 'css-loader',
   options: {
     modules: true,
-    sourceMap: true
+    sourceMap: true,
+    url: (url) => url.charAt(0) === '.',
   }
 };
 
@@ -87,10 +90,12 @@ export const postCssDev = {
 export const postCssProd = {
   loader: 'postcss-loader',
   options: {
-    plugins: () => [
-      require('autoprefixer')
-    ],
-    sourceMap: true
+    postcssOptions: {
+      plugins: [
+        require('autoprefixer'),
+      ],
+    },
+    sourceMap: true,
   }
 };
 
@@ -107,10 +112,12 @@ export const postCssModuleDev = {
 export const postCssModuleProd = {
   loader: 'postcss-loader',
   options: {
-    plugins: () => [
-      require('autoprefixer')
-    ],
-    sourceMap: true
+    postcssOptions: {
+      plugins: [
+        require('autoprefixer'),
+      ],
+    },
+    sourceMap: true,
   }
 };
 

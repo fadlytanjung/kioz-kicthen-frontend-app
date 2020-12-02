@@ -106,15 +106,15 @@ export default {
         oneOf: [
           {
             test: /(\.css|\.scss|\.sass)$/,
-            resourceQuery: /^\?raw$/,
+            // resourceQuery: /^\?raw$/,
             use: [
               MiniCssExtractPlugin.loader,
               loaders.cssProd,
               loaders.postCssProd,
               {
-                loader: "sass-loader",
+                loader: 'sass-loader',
                 options: {
-                  sourceMap: true
+                  sourceMap: false,
                 }
               }
             ],
@@ -126,9 +126,9 @@ export default {
               loaders.cssModuleProd,
               loaders.postCssModuleProd,
               {
-                loader: "sass-loader",
+                loader: 'sass-loader',
                 options: {
-                  sourceMap: true
+                  sourceMap: false,
                 }
               }
             ],
