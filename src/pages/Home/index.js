@@ -6,6 +6,7 @@ import ButtonCart from '../../components/elements/ButtonCart';
 import Pagebase from '../../components/layouts/Pagebase/user';
 import { fetchData, addToCart } from './action';
 import { Button, Dropdown, Typography } from 'leanui-framework/components';
+import { addCart, check } from '../../utils/cart';
 import './styles.scss';
 
 function Home() {
@@ -32,37 +33,8 @@ function Home() {
     setOpen(false);
   };
 
-  const addCart = (id, type) => {
-    const item = cart.filter(el => el.id === id);
-    const tempCart = cart;
-    let newData;
-    if (item.length > 0) {
-
-      if (item[0].qty + (type === 'add' ? 1 : -1) === 0) {
-        newData = [...tempCart.filter(el => el.id !== id)];
-      } else {
-
-        newData = [...tempCart.map((item) => {
-          return item.id === id ? { ...item, qty: item.qty + (type === 'add' ? 1 : -1) } : { ...item };
-        })];
-      }
-      dispatch(addToCart(newData));
-    } else {
-      dispatch(addToCart([...tempCart, { id: id, qty: 1 }]));
-    }
-
-  };
-
-  const check = (id) => {
-    const item = cart.filter(el => el.id === id);
-    if (item.length > 0) {
-      return { ...item[0] };
-    }
-    return false;
-  };
-
   const clickCart = (value, id) => {
-    addCart(id, value > 0 ? 'add' : 'rem');
+    addCart(id, value > 0 ? 'add' : 'rem', cart, dispatch, addToCart);
   };
   return (
     <Pagebase>
@@ -89,9 +61,10 @@ function Home() {
                     <Link to={`/product/${item.slug}`}><Typography tag="h5" variant="headline-small-bold">{item.name}</Typography></Link>
                     {item.discount > 0 && <Typography tag="h3" variant="caption-bold"><strike><span>{item.display_price}</span></strike></Typography>}
                     <Typography tag="p" variant="caption-bold">Rp. {price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')} <span>/ {item.unit}</span></Typography>
-                    {check(item.id) !== false ? <ButtonCart maxValue={item.stock}
-                      onClick={(num) => clickCart(num, item.id)} value={check(item.id).qty} /> :
-                      <Button onClick={() => addCart(item.id, 'add')} size="48" variant="primary">Beli</Button>}
+                    {check(item.id, cart) !== false ? <ButtonCart maxValue={item.stock}
+                      onClick={(num) => clickCart(num, item.id)}
+                      value={check(item.id, cart).qty} /> :
+                      <Button onClick={() => addCart(item.id, 'add', cart, dispatch, addToCart)} size="48" variant="primary">Beli</Button>}
                   </div>
                 </div>
               );

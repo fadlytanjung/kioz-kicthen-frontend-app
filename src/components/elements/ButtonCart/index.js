@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import './styles.scss';
 
@@ -23,6 +23,10 @@ function validate(evt) {
 function ButtonCart(props) {
   const { value, maxValue, onClick } = props;
   const [values, setValue] = useState(value ? value : 0);
+
+  useEffect(()=>{
+    setValue(value);
+  },[value]);
 
   const _click = (type) => {
     setValue(type === 'add' ? values + 1 : values - 1);

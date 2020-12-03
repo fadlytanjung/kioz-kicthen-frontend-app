@@ -7,6 +7,7 @@ import { IMAGES } from '../../configs';
 import { fetchData } from '../Home/action';
 import { getDetail, addToCart } from './action';
 import { Button, Typography } from 'leanui-framework/components';
+import { addCart, check } from '../../utils/cart';
 import './styles.scss';
 
 function Detail() {
@@ -27,40 +28,32 @@ function Detail() {
 
   const anotherProduct = [...product.filter(el => el.id !== detail.id)];
 
-  const addCart = (id, type) => {
-    const item = cart.filter(el => el.id === id);
-    const tempCart = cart;
-    let newData;
-    if (item.length > 0) {
-
-      if (item[0].qty + (type === 'add' ? 1 : -1) === 0) {
-        newData = [...tempCart.filter(el => el.id !== id)];
-      } else {
-
-        newData = [...tempCart.map((item) => {
-          return item.id === id ? { ...item, qty: item.qty + (type === 'add' ? 1 : -1) } : { ...item };
-        })];
-      }
-      dispatch(addToCart(newData));
-    } else {
-      dispatch(addToCart([...tempCart, { id: id, qty: 1 }]));
-    }
-
-  };
-
-  const check = (id) => {
-    const item = cart.filter(el => el.id === id);
-    if (item.length > 0) {
-      return { ...item[0] };
-    }
-    return false;
-  };
-
   const clickCart = (value, id) => {
-    addCart(id, value > 0 ? 'add' : 'rem');
+    addCart(id, value > 0 ? 'add' : 'rem', cart, dispatch, addToCart);
   };
 
   const price = detail.price - ((detail.price * detail.discount) / 100);
+
+  const renderDetai = () =>{
+    return(
+      <React.Fragment>
+        <div className="top">
+          <Typography bold tag="h2" variant="heading-medium-bold">{detail.name}</Typography>
+          <Typography tag="p" variant="heading-large">{detail.description}</Typography>
+        </div>
+        <div className="bottom">
+          {detail.discount > 0 && <Typography tag="h3" variant="caption-bold"><strike><span>{detail.display_price}</span></strike></Typography>}
+          <Typography tag="h2" variant="caption-bold">Rp. {price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')} <span>/ {detail.unit}</span></Typography>
+          <Typography tag="p" variant="caption">Jumlah Pembelian</Typography>
+          {check(detail.id,cart) !== false ? <ButtonCart maxValue={detail.stock}
+            onClick={(num) => clickCart(num, detail.id)}
+            value={check(detail.id,cart).qty} /> :
+            <Button onClick={() => addCart(detail.id, 'add', cart, dispatch, addToCart)} size="48" variant="primary">Beli</Button>}
+        </div>
+      </React.Fragment>
+    );
+  };
+
   return (
     <Pagebase>
       <section className="container-detail">
@@ -72,18 +65,7 @@ function Detail() {
           <div className="content-detail">
             <img src={detail.image} />
             <div className="content-info">
-              <div className="top">
-                <Typography bold tag="h2" variant="heading-medium-bold">{detail.name}</Typography>
-                <Typography tag="p" variant="heading-large">{detail.description}</Typography>
-              </div>
-              <div className="bottom">
-                {detail.discount > 0 && <Typography tag="h3" variant="caption-bold"><strike><span>{detail.display_price}</span></strike></Typography>}
-                <Typography tag="h2" variant="caption-bold">Rp. {price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')} <span>/ {detail.unit}</span></Typography>
-                <Typography tag="p" variant="caption">Jumlah Pembelian</Typography>
-                {check(detail.id) !== false ? <ButtonCart maxValue={detail.stock}
-                  onClick={(num) => clickCart(num, detail.id)} value={check(detail.id).qty} /> :
-                  <Button onClick={() => addCart(detail.id, 'add')} size="48" variant="primary">Beli</Button>}
-              </div>
+              {renderDetai()}
             </div>
           </div>
         </div>
@@ -99,9 +81,10 @@ function Detail() {
                   <div className="product-desc">
                     <Link to={`/product/${item.slug}`}><Typography tag="h5" variant="headline-small-bold">{item.name}</Typography></Link>
                     <Typography tag="p" variant="caption-bold">{item.display_price} <span>/ {item.unit}</span></Typography>
-                    {check(item.id) !== false ? <ButtonCart maxValue={item.stock}
-                      onClick={(num) => clickCart(num, item.id)} value={check(item.id).qty} /> :
-                      <Button onClick={() => addCart(item.id, 'add')} size="48" variant="primary">Beli</Button>}
+                    {check(item.id, cart) !== false ? <ButtonCart maxValue={item.stock}
+                      onClick={(num) => clickCart(num, item.id)}
+                      value={check(item.id,cart).qty} /> :
+                      <Button onClick={() => addCart(item.id, 'add', cart, dispatch, addToCart)} size="48" variant="primary">Beli</Button>}
                   </div>
                 </div>
               );

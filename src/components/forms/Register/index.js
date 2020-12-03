@@ -1,19 +1,20 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { Button, Textfield, Typography } from 'leanui-framework/components';
 import './styles.scss';
 
-function Register(props){
+function Register(props) {
   const { onType } = props;
-  return(
+  return (
     <form className="login-form">
       <Typography tag="h5" variant="headline-large-bold">Daftar</Typography>
-      <Textfield 
+      <Textfield
         onChange={function noRefCheck() { }}
         shadow={false}
         title="Nama Lengkap"
         type="text"
-        />
+      />
       <Textfield
         onChange={function noRefCheck() { }}
         shadow={false}
@@ -31,16 +32,24 @@ function Register(props){
         shadow={false}
         title="Alamat Lengkap"
         type="text"
-        />
+      />
       <Textfield
         onChange={function noRefCheck() { }}
         shadow={false}
         title="Password"
         type="password"
-        />
+      />
       <Button size="48" variant="primary">Daftar</Button>
-      <Typography tag="p" variant="caption">Sudah punya akun? <Link to="#" onClick={()=>onType('login')}>login</Link></Typography>
+      <Typography tag="p" variant="caption">Sudah punya akun? <Link onClick={() => onType('login')} to="#" >login</Link></Typography>
     </form>
   );
 }
 export default Register;
+
+Register.defaultProps = {
+  onType: '',
+};
+
+Register.propTypes = {
+  onType: PropTypes.string,
+};
