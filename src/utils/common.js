@@ -22,6 +22,10 @@ export function setUserData(value) {
   localStorage.setItem(USER_DATA_STORAGE, JSON.stringify(value));
 }
 
+export function setData(key, value) {
+  localStorage.setItem(key,value);
+}
+
 export function setUserToken(value) {
   localStorage.setItem(USER_TOKEN_STORAGE, value);
 }
@@ -42,6 +46,17 @@ export function getUserData() {
     ? localStorage.getItem(USER_DATA_STORAGE) : null;
 
   return retval;
+}
+
+export function getData(key) {
+  const retval = localStorage.getItem(key)
+    ? localStorage.getItem(key) : null;
+
+  return retval;
+}
+
+export function removeData(key){
+  localStorage.removeItem(key);
 }
 
 export function getUserToken() {

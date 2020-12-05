@@ -35,9 +35,22 @@ const currency = (price) =>{
   return Number(price).toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 };
 
+const checkExist = (data, value) => {
+  return data.some(function (el) {
+    return el.name === value;
+  });
+};
+
+const highValue = (obj) => {
+  return obj.reduce((a, b) => obj[a] > obj[b] ? a : b);
+};
+
+
 export {
   addCart,
   check,
+  checkExist,
   clickCart,
   currency,
+  highValue,
 };

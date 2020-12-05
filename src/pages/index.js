@@ -14,6 +14,7 @@ const Suspensed = (Element) => function suspense(props) {
   );
 };
 const pages = {
+  Payment: Suspensed(lazy(()=> import('./Payment'))),
   Detail: Suspensed(lazy(() => import('./Detail'))),
   Error404: Suspensed(lazy(() => import('./Error404'))),
   Home: Suspensed(lazy(() => import('./Home'))),

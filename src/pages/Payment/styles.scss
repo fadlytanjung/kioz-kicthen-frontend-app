@@ -1,0 +1,136 @@
+@import '../../styles/base.scss';
+
+$border-color: map-get(map-get($color, secondary), dark);
+$border-payment-color: map-get(map-get($color, secondary), dark);
+$bg-channel-color: map-get(map-get($color, secondary), light);
+
+.container-payment{
+  padding:50px 0px;
+}
+
+.heading-wrapper{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 30px;
+
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: -15px;
+  margin-left: -15px;
+  .left-side {
+    flex: 0 0 66.666667%;
+    max-width: 66.666667%;
+    padding-right: 15px;
+    padding-left: 15px;
+  }
+
+  .right-side{
+    flex: 0 0 33.333333%;
+    max-width: 33.333333%;
+    padding-right: 15px;
+    padding-left: 15px;
+  }
+}
+
+.card-payment{
+  padding: 20px;
+  box-shadow: 2px 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  .payment-method{
+    margin-top: 53px;
+    box-sizing: border-box;
+    .button{
+      width: 100%;
+      border-radius: 4px;
+      margin-top: 20px;
+      .caption-button{
+        display: block;
+      }
+    }
+    h4{
+      margin-bottom: 23px;
+    }
+    .method-container{
+      padding:11px 13px;
+      border-radius:4px;
+      border:1px solid $border-payment-color;
+      background-color: $bg-channel-color;
+      margin-bottom: 14px;
+      h5{
+        color:$border-payment-color;
+        font-weight: 600;
+        font-size: 18px;
+        margin: 0;
+      }
+      h6{
+        color:$border-payment-color;
+        font-weight: 600;
+        font-size: 12px;
+        margin: 0;
+        margin-bottom: 20px;
+      }
+
+      .button-channel-container{
+        display: flex;
+        flex-direction: row;
+        .channel{
+          margin-right: 13px;
+          width: 102px;
+          height: 36px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          background-color: var(--data-color-white);
+          border-radius: 4px;
+          cursor: pointer;
+        }
+        .active{
+          border: 2px solid var(--data-color-primary);
+        }
+      }
+    }
+  }
+  .amount{
+    display: flex;
+    justify-content: space-between;
+    h4{
+      margin-bottom: 10px;
+    }
+  }
+  .voucher{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    margin-top:10px;
+    margin-bottom: 18px;
+    padding-bottom: 21px;
+    border-bottom: 1px solid $border-color;
+    .textfield-wrapper{
+      border-radius: 4px;
+    }
+    .button{
+      width: 108px;
+      border-radius: 4px;
+    }
+  }
+}
+
+@media screen and (max-width:991px){
+  .row{
+    .left-side,.right-side{
+      position: relative;
+      width: 100%;
+      max-width: 100%;
+      flex:0 0 100%;
+      padding-right: 15px;
+      padding-left: 15px;
+    }
+  }
+}
