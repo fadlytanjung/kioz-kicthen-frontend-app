@@ -5,14 +5,15 @@ import { IMAGES } from '../../../../configs';
 import './styles.scss';
 
 function Pagebase(props) {
+  const { back } = props;
   const history = useHistory();
-  const back = () => history.goBack();
+  const prev = () => history.goBack();
   return (
     <React.Fragment>
       <div className="header-payment">
         <div className="container-small">
-          <img onClick={back} src={IMAGES.arrowLeft} />
-          <img src={IMAGES.logoWhite} />
+          {back && <img onClick={prev} src={IMAGES.arrowLeft} />}
+          <img onClick={back==false ? ()=>history.push('/') : null }src={IMAGES.logoWhite} style={{ position:'relative' }} />
         </div>
       </div>
       {props.children}
@@ -23,9 +24,11 @@ function Pagebase(props) {
 export default Pagebase;
 
 Pagebase.defaultProps = {
-  children: null
+  back: true,
+  children: null,
 };
 
 Pagebase.propTypes = {
+  back: PropTypes.bool,
   children: PropTypes.node,
 };

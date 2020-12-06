@@ -1,0 +1,65 @@
+@import '../../styles/base.scss';
+
+$border-color: map-get(map-get($color, secondary), dark);
+
+.action-button {
+  color: #4C4E50;
+}
+.action-button.red {
+  color:var(--data-color-primary)
+}
+.action-wrapper {
+  display: flex;
+  justify-content: space-between;
+  width: 200px;
+}
+.button-search {
+  width: 187px;
+}
+.button-search > button {
+  color: white !important;
+  height: 50px;
+  width: inherit;
+}
+.button-search > button > p {
+  font-weight: 700;
+}
+.headline {
+  color: var(--data-color-primary);
+}
+.headline-sub {
+  color: var(--data-color-secondary);
+}
+.headline-wrapper {
+  display: flex;
+  flex-direction: column;
+  margin-top: 48px;
+}
+.label-reset {
+  color: var(--data-color-primary);
+  cursor: pointer;
+  margin: 0 31px;
+}
+.page-content {
+  background: #FFFFFF;
+  border-radius: 8px 8px 0 0;
+  box-shadow: 0px 4px 8px rgba(82, 87, 92, 0.12);
+  flex-grow: 1;
+  padding: 24px;
+  margin-top: 21px;
+}
+.page-content-head {
+  display: flex;
+  justify-content: space-between;
+}
+.page-content-head-right {
+  align-items: center;
+  display: flex;
+}
+.table-wrapper {
+  margin-top: 20px
+}
+
+@media screen and (max-width:991px){
+  
+}

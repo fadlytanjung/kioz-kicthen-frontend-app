@@ -3,6 +3,7 @@ import configureStore, { history } from './store/configureStore';
 import { render } from 'react-dom';
 import App from './App';
 import 'typeface-montserrat';
+import 'typeface-roboto';
 import './favicon.ico';
 import './App.scss';
 

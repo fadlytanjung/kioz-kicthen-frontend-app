@@ -8,49 +8,47 @@ import { Provider } from 'react-redux';
 import { ROUTES } from './configs';
 import { Switch, Route } from 'react-router-dom';
 import {
-  checkExpireTime,
-  clearStorages,
-  getUserToken,
   getUserData
 } from '../src/utils/common';
 import "@babel/polyfill";
 
 const _checkAuth = () => {
   const { pathname } = location;
-  const { HOME,LOGIN } = ROUTES;
-  const isLoggedIn = (pathname == LOGIN());
+  const { LOGIN,PRODUCT } = ROUTES;
   let shouldRender = true;
   const userDataCache = JSON.parse(getUserData());
-  const role = (userDataCache) ? userDataCache.role : 2;
-  if (!getUserToken() && pathname !== LOGIN()) {
-    location.href = LOGIN();
-    shouldRender = false;
-  } else if (checkExpireTime() && pathname !== LOGIN()) {
-    clearStorages();
-    location.href = LOGIN();
-    shouldRender = false;
-  } else if (checkExpireTime()) {
-    clearStorages();
-  } else if (getUserToken() && pathname === LOGIN()) {
-    location.href = HOME();
+  const role = (userDataCache) ? userDataCache.role : 'user';
+ 
+  if (getUserData() && role === 'admin' && pathname === LOGIN()) {
+    location.href = PRODUCT();
     shouldRender = false;
   } 
-  return [isLoggedIn, shouldRender];
+  return [shouldRender, role];
 };
 
 const App = ({ history, store }) => {
-  // const { Login } = pages;
-  // const [isLoggedIn, shouldRender] = _checkAuth();
+  
+  const [shouldRender,role] = _checkAuth();
 
-  // const routeApp = isLoggedIn ? <Login /> :
-  //   (<Switch>
-  //     <Route exact path={'/'} component={pages.Home}/>
-  //     <Route component={pages.Error404} />
-  //   </Switch>);
-
-  // if (!shouldRender) {
-  //   return (null);
-  // }
+  const admin = role === 'admin' && (
+    <Switch>
+      <Route exact path={ROUTES.PRODUCT()} component={pages.Product}/>
+      <Route exact path={ROUTES.TRANSACTION()} component={pages.Transaction} />
+      <Route exact path={ROUTES.ORDER()} component={pages.Order} />
+      <Route exact path={ROUTES.REPORT()} component={pages.Report} />
+      <Route exact path={ROUTES.PREDICTION()} component={pages.Prediction} />
+      <Route exact path={ROUTES.USER()} component={pages.User} />
+      <Route exact path={ROUTES.BILLING()} component={pages.Billing} />
+      <Route exact path={ROUTES.HOME()} component={pages.Home} />
+      <Route exact path={ROUTES.LOGIN()} component={pages.Login} />
+      <Route exact path={ROUTES.PAYMENT()} component={pages.Payment} />
+      <Route exact path={ROUTES.DETAIL(':slug')} component={pages.Detail} />
+      <Route component={pages.Error404} />
+    </Switch>
+  );
+  if(!shouldRender){
+    return null;
+  }
 
   return (
     <Provider store={store}>
@@ -58,7 +56,10 @@ const App = ({ history, store }) => {
         <Router history={history}>
           <AppContextProvider>
             <Switch>
+              {admin}
+              <Route exact path={ROUTES.BILLING()} component={pages.Billing} />
               <Route exact path={ROUTES.HOME()} component={pages.Home} />
+              <Route exact path={ROUTES.LOGIN()} component={pages.Login} />
               <Route exact path={ROUTES.PAYMENT()} component={pages.Payment} />
               <Route exact path={ROUTES.DETAIL(':slug')} component={pages.Detail} />
               <Route component={pages.Error404} />

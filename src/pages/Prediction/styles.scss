@@ -1,0 +1,7 @@
+@import '../../styles/base.scss';
+
+$border-color: map-get(map-get($color, secondary), dark);
+
+@media screen and (max-width:991px){
+  
+}

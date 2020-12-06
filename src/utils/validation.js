@@ -28,6 +28,19 @@ function validPassport(value) {
   );
 }
 
+export function checkExist(value) {
+  if (value !== undefined && value !== null && value !== '') {
+    return true;
+  } else { return false; }
+}
+
+export const required = value => checkExist(value) ? undefined : 'Required';
+
+export const match = (matchName, err) => (value, allValues) =>
+  value !== allValues[matchName]
+    ? err
+    : undefined;
+
 export const isEmail = (value) => rgEmail.test(value);
 export const isPassword = (value) => rgPassword(value);
 export const isPhone = (value) => rgPhone.test(value);
