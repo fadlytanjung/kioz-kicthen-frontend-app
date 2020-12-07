@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import AlertFragment from '../../components/fragments/Alert';
-import Form from '../../components/forms/Admin';
+import Form from '../../components/forms/Product';
 import Pagebase from '../../components/layouts/Pagebase/admin';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, DataTable, Popup, SearchBox, Typography } from 'leanui-framework/components';
@@ -12,14 +12,17 @@ import './styles.scss';
 export let action = null;
 
 export default function Product(props) {
-  const { admin, actions, data, messageAlert, meta: { page=1, totalPage=5 },
+  const { messageAlert, meta: { page=1, totalPage=5 },
     showAlert, typeAlert } = props;
 
   const dispatch = useDispatch();
   const { product } = useSelector(s=>s.product);
+  const { detail } = useSelector(s=>s.detail);
+
   useEffect(() => {
     dispatch(fetchData());
   }, []);
+
   const [popup, setPopup] = useState(false);
   const [popupEdit, setPopupEdit] = useState(false);
   useEffect(() => {
@@ -38,7 +41,7 @@ export default function Product(props) {
 
   const buttonAdd = () => {
     return (
-      <div className="button-search" onClick={() => { setPopup(true); }}>
+      <div className="button-search" onClick={() => { setPopup(true);dispatch(fetchData()) }}>
         <Button
           disable={false}
           loading={false}
@@ -51,7 +54,7 @@ export default function Product(props) {
 
   const clickEdit = (adminItem) => {
     setPopupEdit(true);
-    // actions.selectAdmin(adminItem);
+    dispatch(fetchData(adminItem.id));
   };
 
   const clickNav = (page) => {
@@ -86,7 +89,6 @@ export default function Product(props) {
   };
 
   const submit = (value) => {
-    const { actions } = props;
     const { email, fullName, password, phoneNumber, repeat, role, status } = value;
 
     if (checkExist(email) && checkExist(phoneNumber) && checkExist(password)
@@ -114,7 +116,7 @@ export default function Product(props) {
     <React.Fragment>
       <Pagebase>
         {showAlert && <AlertFragment message={messageAlert} onClose={closeAlert} type={typeAlert} />}
-        {((popup) || (popupEdit && admin)) &&
+        {((popup) || (popupEdit && product)) &&
           <Popup close height={818} onClose={closePopup} width={530}>
             <Form onCancel={closePopup} onSubmit={submit} /></Popup>}
         <section className="headline-wrapper">
@@ -130,7 +132,7 @@ export default function Product(props) {
               <SearchBox
                 onChange={(e) => { setQuery(e.target.value); }}
                 onKeyUp={onKeyUpQuery}
-                placeholder="Cari nama admin. . ." value={query} width="413px" />
+                placeholder="Cari nama produk. . ." value={query} width="413px" />
               <Typography bold="true" class-name="label-reset"
                 onClick={resetQuery} variant="body">Reset</Typography>
               {
@@ -145,7 +147,7 @@ export default function Product(props) {
               onClickPerPage={() => { setOpenPage(!openPage); }}
               onCLickSelectPerPage={selectPerPage}
               openPerPage={openPage}
-              show={show} showPerPage={true} showToPage={true}
+              show={show} showPerPage={false} showToPage={false}
               totalPage={totalPage}
               valuePerPage={size} />
           </div>

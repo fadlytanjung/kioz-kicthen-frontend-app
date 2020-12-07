@@ -3,19 +3,19 @@ import { reduxForm } from 'redux-form';
 import Admin from './component';
 
 function mapStateToProps(state) {
-  const { AdminForm = {} } = state.form;
-  const { admin } = state.admins;
-  const formValues = AdminForm.values;
+  const { user = {} } = state.form;
+  const { detail } = state.user;
+  const formValues = user.values;
 
   return {
     // content,
     formValues,
-    initialValues: admin,
+    initialValues: detail,
   };
 }
 
 const Form = reduxForm({
-  form: 'AdminForm',
+  form: 'user',
   enableReinitialize: true,
 })(Admin);
 

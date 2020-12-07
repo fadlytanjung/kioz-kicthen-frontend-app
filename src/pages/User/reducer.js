@@ -1,17 +1,23 @@
 import { ACTIONS } from '../../constants';
 
 const initialState = {
-  product: [],
+  user: [],
+  detail: {},
 };
 
 export default function reducer(state = initialState, action) {
-  const { type, product } = action;
-
+  const { type, user, detail } = action;
   switch (type) {
-    case ACTIONS.FETCH_PRODUCTS:
+    case ACTIONS.FETCH_USERS:
       return {
         ...state,
-        product,
+        user,
+      };
+
+    case ACTIONS.FETCH_USER:
+      return {
+        ...state,
+        detail,
       };
     default:
       return state;

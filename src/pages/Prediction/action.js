@@ -1,28 +1,31 @@
-import { ACTIONS, product, user } from '../../constants';
+import React from 'react';
+import { ACTIONS, product } from '../../constants';
+import { action } from './index';
 
-export function fetchData() {
+export function fetchData(id) {
   return dispatch => {
-    dispatch({
-      type: ACTIONS.FETCH_PRODUCTS,
-      product: [...product]
-    });
-  };
-}
-
-export function fetchUser() {
-  return dispatch => {
-    dispatch({
-      type: ACTIONS.FETCH_USERS,
-      user: [...user]
-    });
-  };
-}
-
-export function addToCart(data) {
-  return dispatch => {
-    dispatch({
-      type: ACTIONS.ADD_CART,
-      cart: [...data]
-    });
+    if (id) {
+      dispatch({
+        type: ACTIONS.FETCH_PRODUCT,
+        detail: { ...product.filter(el => el.id === id)[0] }
+      })
+    } else {
+      dispatch({
+        type: ACTIONS.FETCH_PRODUCT,
+        detail: {},
+      });
+      dispatch({
+        type: ACTIONS.FETCH_PRODUCTS,
+        product: [...product.map(obj => {
+          delete obj['display_price'];
+          delete obj['display_full_price'];
+          return {
+            ...obj,
+            image: <img src={obj.image} />,
+            action: action(obj)
+          }
+        }),]
+      });
+    }
   };
 }

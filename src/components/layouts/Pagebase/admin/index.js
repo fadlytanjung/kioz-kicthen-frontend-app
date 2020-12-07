@@ -1,16 +1,19 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Drawer, List, ListItem, SearchBox, Typography } from 'leanui-framework/components';
-import { HomeJs, ProfileJs } from 'leanui-framework/components/Icons';
+import { HomeJs, ProfileJs, LineChartJs } from 'leanui-framework/components/Icons';
+import Order from './Order';
+import Report from './Report';
+import Transaction from './Transaction';
 import { IMAGES, ROUTES } from '../../../../configs';
-import { clearStorages } from '../../../../utils/common';
-
+import { clearStorages, getUserData } from '../../../../utils/common';
 import './style.css';
+import { useHistory } from 'react-router-dom';
 
 export default function Pagebase(props) {
   const [nav, changeNav] = useState('large');
   const [iconOnly, changeIconOnly] = useState(undefined);
-
+  const history = useHistory();
   const clickNav = () => {
     changeNav(nav === 'large' ? 'small' : 'large');
     changeIconOnly(iconOnly === 'true' ? undefined : 'true');
@@ -21,14 +24,20 @@ export default function Pagebase(props) {
     location.href = ROUTES.LOGIN();
   };
 
+  const toPage = (page) =>{
+    history.push(page);
+  };
+
   const menuSetting = () => (
     <section className="header-right-content">
-      <Typography bold="true" tag="label" variant="body">Hi, indiboxanalytics</Typography>
+      <Typography bold="true" tag="label" variant="body">Hi, {JSON.parse(getUserData()).fullname}</Typography>
       <div>
-        <Typography tag="label" variant="caption">Admin</Typography>
+        <Typography tag="label" variant="caption">{JSON.parse(getUserData()).role}</Typography>
       </div>
     </section>
   );
+
+  const active = (path) => history.location.pathname === path ? { active: true } : {};
 
   return (
     <div className="page-layout">
@@ -36,11 +45,23 @@ export default function Pagebase(props) {
         label-nav="Sembunyikan Menu"
         onClickNav={clickNav} variant={nav}>
         <List>
-          <ListItem active="true" center={iconOnly} icon={HomeJs} icon-only={iconOnly}>
+          <ListItem {...active('/products')} center={iconOnly} icon={HomeJs} icon-only={iconOnly} onClick={()=>toPage('/products')}>
             Produk
           </ListItem>
-          <ListItem center={iconOnly} icon={ProfileJs} icon-only={iconOnly}>
+          <ListItem {...active('/user')} center={iconOnly} icon={ProfileJs} icon-only={iconOnly} onClick={() =>toPage('/user')}>
             User
+          </ListItem>
+          <ListItem {...active('/order')} center={iconOnly} icon={Order} icon-only={iconOnly} onClick={() =>toPage('/order')}>
+            Pesanan
+          </ListItem>
+          <ListItem {...active('/history-transaction')} center={iconOnly} icon={Transaction} icon-only={iconOnly} onClick={() =>toPage('/history-transaction')}>
+            Riwayat Transaksi
+          </ListItem>
+          <ListItem {...active('/report')} center={iconOnly} icon={Report} icon-only={iconOnly} onClick={() =>toPage('/report')}>
+            Laporan Penjualan
+          </ListItem>
+          <ListItem {...active('/prediction')} center={iconOnly} icon={LineChartJs} icon-only={iconOnly} onClick={() =>toPage('/prediction')}>
+            Prediksi Penjualan
           </ListItem>
         </List>
       </Drawer>

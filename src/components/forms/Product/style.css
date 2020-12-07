@@ -29,3 +29,7 @@ form {
   justify-content: space-between;
   width: 100%;
 }
+
+.form-button section button:nth-child(1) label{
+  color: #000;
+}
