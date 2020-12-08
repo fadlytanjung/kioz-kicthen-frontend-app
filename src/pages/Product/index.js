@@ -1,3 +1,4 @@
+/* eslint-disable react/display-name*/
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import AlertFragment from '../../components/fragments/Alert';
@@ -12,12 +13,11 @@ import './styles.scss';
 export let action = null;
 
 export default function Product(props) {
-  const { messageAlert, meta: { page=1, totalPage=5 },
+  const { messageAlert, meta: { page = 1, totalPage = 5 },
     showAlert, typeAlert } = props;
 
   const dispatch = useDispatch();
-  const { product } = useSelector(s=>s.product);
-  const { detail } = useSelector(s=>s.detail);
+  const { product } = useSelector(s => s.product);
 
   useEffect(() => {
     dispatch(fetchData());
@@ -41,7 +41,7 @@ export default function Product(props) {
 
   const buttonAdd = () => {
     return (
-      <div className="button-search" onClick={() => { setPopup(true);dispatch(fetchData()) }}>
+      <div className="button-search" onClick={() => { setPopup(true); dispatch(fetchData()); }}>
         <Button
           disable={false}
           loading={false}
@@ -57,12 +57,12 @@ export default function Product(props) {
     dispatch(fetchData(adminItem.id));
   };
 
-  const clickNav = (page) => {
+  const clickNav = () => {
     // actions.getListAdmins(page, 5);
   };
 
   const closeAlert = () => {
-    actions.closeAlert();
+    // actions.closeAlert();
   };
 
   const closePopup = () => {
@@ -72,15 +72,12 @@ export default function Product(props) {
 
   const onKeyUpQuery = (e) => {
     if (e.key === 'Enter' && query) {
-      // actions.resetList();
-      // actions.getListAdmins(1, 5, query);
+      //TODO
     }
   };
 
   const resetQuery = () => {
     setQuery('');
-    // actions.resetList();
-    // actions.getListAdmins(1, 5);
   };
 
   const selectPerPage = (size) => {
@@ -93,8 +90,10 @@ export default function Product(props) {
 
     if (checkExist(email) && checkExist(phoneNumber) && checkExist(password)
       && checkExist(repeat) && checkExist(role) && checkExist(status)
-      && checkExist(fullName)) {}
-      // actions.addEditAdmin(value);
+        && checkExist(fullName)) {
+      //TODO
+    }
+    // actions.addEditAdmin(value);
   };
 
   action = (adminItem) => {
@@ -115,7 +114,8 @@ export default function Product(props) {
   return (
     <React.Fragment>
       <Pagebase>
-        {showAlert && <AlertFragment message={messageAlert} onClose={closeAlert} type={typeAlert} />}
+        {showAlert &&
+          <AlertFragment message={messageAlert} onClose={closeAlert} type={typeAlert} />}
         {((popup) || (popupEdit && product)) &&
           <Popup close height={818} onClose={closePopup} width={530}>
             <Form onCancel={closePopup} onSubmit={submit} /></Popup>}
@@ -152,7 +152,7 @@ export default function Product(props) {
               valuePerPage={size} />
           </div>
         </section>
-       </Pagebase>
+      </Pagebase>
     </React.Fragment>
   );
 }

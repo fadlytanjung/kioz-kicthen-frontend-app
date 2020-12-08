@@ -1,31 +1,37 @@
-import React from 'react';
-import { ACTIONS, product } from '../../constants';
+import { ACTIONS, order } from '../../constants';
 import { action } from './index';
 
 export function fetchData(id) {
   return dispatch => {
     if (id) {
       dispatch({
-        type: ACTIONS.FETCH_PRODUCT,
-        detail: { ...product.filter(el => el.id === id)[0] }
-      })
+        type: ACTIONS.FETCH_ORDER,
+        detail: { ...order.filter(el => el.orderId === id)[0] }
+      });
     } else {
       dispatch({
-        type: ACTIONS.FETCH_PRODUCT,
+        type: ACTIONS.FETCH_ORDER,
         detail: {},
       });
       dispatch({
-        type: ACTIONS.FETCH_PRODUCTS,
-        product: [...product.map(obj => {
-          delete obj['display_price'];
-          delete obj['display_full_price'];
+        type: ACTIONS.FETCH_ORDERS,
+        order: [...order.map(obj => {
           return {
             ...obj,
-            image: <img src={obj.image} />,
+            open: false,
             action: action(obj)
-          }
-        }),]
+          };
+        })]
       });
     }
+  };
+}
+
+export function updateData(data) {
+  return dispatch => {
+    dispatch({
+      type: ACTIONS.FETCH_ORDERS,
+      order: [...data]
+    });
   };
 }

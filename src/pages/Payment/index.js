@@ -63,7 +63,7 @@ function Payment() {
                     <Typography tag="h4" variant="headline-small-bold">Waktu Pengiriman</Typography>
                     <Dropdown item={[{ text: '11.00-13.00', value: '11.00-13.00' }, { text: '14.00-16.00', value: '14.00-16.00' } ]} value="11.00-13.00" variant="outline"/>
                   </div>
-              </div>
+                </div>
               </div>
             </div>
             <div className="right-side">

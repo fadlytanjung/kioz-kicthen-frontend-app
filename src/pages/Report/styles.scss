@@ -60,6 +60,24 @@ $border-color: map-get(map-get($color, secondary), dark);
   margin-top: 20px
 }
 
+.wrapper-date{
+  display: flex;
+  flex-direction: column;
+  width: auto;
+  position: relative;
+}
+.pickerHead{
+    font-size: 16px !important;
+  }
+.date-report{
+  margin-top: 30px;
+  margin-bottom: 30px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
+  width:600px;
+}
 @media screen and (max-width:991px){
   
 }

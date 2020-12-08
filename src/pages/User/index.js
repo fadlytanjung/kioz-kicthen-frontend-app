@@ -1,10 +1,11 @@
+/*eslint-disable react/display-name*/
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import AlertFragment from '../../components/fragments/Alert';
 import Form from '../../components/forms/User';
 import Pagebase from '../../components/layouts/Pagebase/admin';
 import { useDispatch, useSelector } from 'react-redux';
-import { Alert,Button, DataTable, Popup, SearchBox, Typography } from 'leanui-framework/components';
+import { Alert, Button, DataTable, Popup, SearchBox, Typography } from 'leanui-framework/components';
 import { checkExist } from '../../utils/validation';
 import { fetchData } from './action';
 import { addUser } from '../../components/forms/Register/action';
@@ -20,7 +21,6 @@ export default function User(props) {
 
   const dispatch = useDispatch();
   const { user } = useSelector(s => s.user);
-  const { detail } = useSelector(s => s.detail);
   useEffect(() => {
     dispatch(fetchData());
   }, []);
@@ -41,11 +41,11 @@ export default function User(props) {
   const head = ['Id', 'Nama Lengkap', 'Email', 'No Hp', 'Alamat', 'Role', 'Aksi'];
   const body = user.length > 0 ? [user] : [[]];
 
-  const show = ['id','fullname', 'email', 'phone', 'address', 'role', 'action'];
+  const show = ['id', 'fullname', 'email', 'phone', 'address', 'role', 'action'];
 
   const buttonAdd = () => {
     return (
-      <div className="button-search" onClick={() => { setPopup(true); dispatch(fetchData()) }}>
+      <div className="button-search" onClick={() => { setPopup(true); dispatch(fetchData()); }}>
         <Button
           disable={false}
           loading={false}
@@ -61,12 +61,11 @@ export default function User(props) {
     dispatch(fetchData(adminItem.id));
   };
 
-  const clickNav = (page) => {
-    // actions.getListAdmins(page, 5);
+  const clickNav = () => {
   };
 
   const closeAlert = () => {
-    actions.closeAlert();
+
   };
 
   const closePopup = () => {
@@ -76,15 +75,12 @@ export default function User(props) {
 
   const onKeyUpQuery = (e) => {
     if (e.key === 'Enter' && query) {
-      // actions.resetList();
-      // actions.getListAdmins(1, 5, query);
+      //TODO
     }
   };
 
   const resetQuery = () => {
     setQuery('');
-    // actions.resetList();
-    // actions.getListAdmins(1, 5);
   };
 
   const selectPerPage = (size) => {
@@ -98,11 +94,11 @@ export default function User(props) {
     if (checkExist(email) && checkExist(phone) && checkExist(password)
       && checkExist(address) && checkExist(role)
       && checkExist(fullname)) {
-        dispatch(addUser({ ...value, role: 'user', id: user.length > 0 ? highValue(user).id + 1 : 1 }));
-        setAlert(true);
-        setMessage({ message: 'Berhasil Menambah User', type: 'success' });
-        dispatch(reset('register'));
-      }
+      dispatch(addUser({ ...value, role: 'user', id: user.length > 0 ? highValue(user).id + 1 : 1 }));
+      setAlert(true);
+      setMessage({ message: 'Berhasil Menambah User', type: 'success' });
+      dispatch(reset('register'));
+    }
   };
 
   action = (adminItem) => {
@@ -113,10 +109,10 @@ export default function User(props) {
           <Typography class-name="action-button" tag="label" variant="button">Edit</Typography>
         </Button>
         {adminItem.email !== 'kiozadmin@kiozkitchen.id' &&
-        <Button
-          size="32" variant="secondary" width="84px">
-          <Typography class-name="action-button red" tag="label" variant="button">Delete</Typography>
-        </Button>}
+          <Button
+            size="32" variant="secondary" width="84px">
+            <Typography class-name="action-button red" tag="label" variant="button">Delete</Typography>
+          </Button>}
       </div>
     );
   };
@@ -124,8 +120,10 @@ export default function User(props) {
   return (
     <React.Fragment>
       <Pagebase>
-        {showAlert && <AlertFragment message={messageAlert} onClose={closeAlert} type={typeAlert} />}
-        {((popup) || (popupEdit && user)) &&
+        {showAlert &&
+          <AlertFragment message={messageAlert} onClose={closeAlert} type={typeAlert} />}
+        {((popup) ||
+          (popupEdit && user)) &&
           <Popup close height={868} onClose={closePopup} width={530}>
             {alert && <Alert
               width={100}

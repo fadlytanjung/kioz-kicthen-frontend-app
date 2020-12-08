@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory} from 'react-router-dom';
-import { IMAGES, ROUTES } from '../../configs';
+import { IMAGES } from '../../configs';
 import { Alert, Button, Checkbox, Textfield } from 'leanui-framework/components';
 import { EyeOff, EyeOn } from 'leanui-framework/components/Icons';
 import { fetchUser } from '../Home/action';
 import { authlogin } from './action';
 import './styles.scss';
 
-export default function Login(props) {
+export default function Login() {
   const [hide, setHide] = useState(true);
   const [alert, setAlert] = useState(false);
   const [message, setMessage] = useState({});
@@ -23,8 +22,6 @@ export default function Login(props) {
   const { messageError } = useSelector(s => s.auth);
 
   const dispatch = useDispatch();
-  const history = useHistory();
-
 
   useEffect(() => {
     dispatch(fetchUser());

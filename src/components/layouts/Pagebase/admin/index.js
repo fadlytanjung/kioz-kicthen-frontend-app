@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Drawer, List, ListItem, SearchBox, Typography } from 'leanui-framework/components';
-import { HomeJs, ProfileJs, LineChartJs } from 'leanui-framework/components/Icons';
-import Order from './Order';
+import { HomeJs, ProfileJs, LineChartJs, CalendarJs,  } from 'leanui-framework/components/Icons';
 import Report from './Report';
 import Transaction from './Transaction';
 import { IMAGES, ROUTES } from '../../../../configs';
@@ -51,7 +50,7 @@ export default function Pagebase(props) {
           <ListItem {...active('/user')} center={iconOnly} icon={ProfileJs} icon-only={iconOnly} onClick={() =>toPage('/user')}>
             User
           </ListItem>
-          <ListItem {...active('/order')} center={iconOnly} icon={Order} icon-only={iconOnly} onClick={() =>toPage('/order')}>
+          <ListItem {...active('/order')} center={iconOnly} icon={CalendarJs} icon-only={iconOnly} onClick={() =>toPage('/order')}>
             Pesanan
           </ListItem>
           <ListItem {...active('/history-transaction')} center={iconOnly} icon={Transaction} icon-only={iconOnly} onClick={() =>toPage('/history-transaction')}>

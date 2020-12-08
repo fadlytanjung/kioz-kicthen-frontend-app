@@ -59,7 +59,30 @@ $border-color: map-get(map-get($color, secondary), dark);
 .table-wrapper {
   margin-top: 20px
 }
+.date-report{
+  margin-top: 30px;
+  margin-bottom: 30px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
+  width:700px;
+  .dropdown{
+    .dropdown-button{
+      background-color: #ffffff;
+      margin-bottom: 0px;
+    }
+    .dropdown-item{
+      margin-top:10px;
+    }
+  }
+}
 
+.prediction-chart{
+  width:600px;
+  height: 500px;
+  background-color: #ffffff;
+}
 @media screen and (max-width:991px){
   
 }

@@ -12,6 +12,10 @@ $border-color: map-get(map-get($color, secondary), dark);
   display: flex;
   justify-content: space-between;
   width: 200px;
+  .button{
+      
+          color:#000000 !important;
+  }
 }
 .button-search {
   width: 187px;
@@ -58,6 +62,13 @@ $border-color: map-get(map-get($color, secondary), dark);
 }
 .table-wrapper {
   margin-top: 20px
+}
+.resi-wrapper{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 30px;
+  
 }
 
 @media screen and (max-width:991px){

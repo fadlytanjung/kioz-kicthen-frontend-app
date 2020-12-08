@@ -6,8 +6,8 @@ export function fetchData(id) {
     if (id) {
       dispatch({
         type: ACTIONS.FETCH_USER,
-        detail: { ...user.filter(el => el.id === id)[0]}
-      })
+        detail: { ...user.filter(el => el.id === id)[0] }
+      });
     } else {
       dispatch({
         type: ACTIONS.FETCH_USER,
@@ -19,8 +19,8 @@ export function fetchData(id) {
           return {
             ...obj,
             action: action(obj)
-          }
-        }),]
+          };
+        })]
       });
     }
   };

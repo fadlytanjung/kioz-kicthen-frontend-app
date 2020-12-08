@@ -1,13 +1,13 @@
+/*eslint-disable react/display-name*/
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import AlertFragment from '../../components/fragments/Alert';
-import Form from '../../components/forms/Product';
 import Pagebase from '../../components/layouts/Pagebase/admin';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, DataTable, Popup, SearchBox, Typography } from 'leanui-framework/components';
-import { checkExist } from '../../utils/validation';
-import { fetchData } from './action';
+import { fetchData, updateData } from './action';
 import './styles.scss';
+import Textfield from 'leanui-framework/components/Textfield';
 
 export let action = null;
 
@@ -16,53 +16,36 @@ export default function Order(props) {
     showAlert, typeAlert } = props;
 
   const dispatch = useDispatch();
-  const { product } = useSelector(s => s.product);
-  const { detail } = useSelector(s => s.detail);
-
-  useEffect(() => {
-    dispatch(fetchData());
-  }, []);
+  const { order } = useSelector(s => s.order);
 
   const [popup, setPopup] = useState(false);
   const [popupEdit, setPopupEdit] = useState(false);
+  const [resi, setResi] = useState(null);
+  const [data, setData] = useState(null);
+  const [openPage, setOpenPage] = useState(false);
+  const [query, setQuery] = useState();
+  const [size, setSize] = useState(5);
+
   useEffect(() => {
     if (showAlert && popup) {
       setPopup(false);
     }
   });
+  useEffect(() => {
+    dispatch(fetchData());
+  }, []);
 
-  const [openPage, setOpenPage] = useState(false);
-  const [query, setQuery] = useState();
-  const [size, setSize] = useState(5);
-  const head = ['Id', 'Nama', 'Deskripsi', 'Gambar', 'Harga', 'Stok', 'Unit', 'Diskon', 'Aksi'];
-  const body = product.length > 0 ? [product] : [[]];
+  const head = ['Id Pesanan', 'Total Produk', 'Total Bayar', 'Status Pembayaran', 'Status Pesanan', 'Aksi'];
+  const body = order.length > 0 ? [order] : [[]];
 
-  const show = ['id', 'name', 'description', 'image', 'price', 'stock', 'unit', 'discount', 'action'];
+  const show = ['orderId', 'totalItems', 'amount', 'paymentStatus', 'orderStatus', 'action'];
 
-  const buttonAdd = () => {
-    return (
-      <div className="button-search" onClick={() => { setPopup(true); dispatch(fetchData()) }}>
-        <Button
-          disable={false}
-          loading={false}
-          size="50"
-          variant="primary"
-        >Tambah Produk</Button>
-      </div>
-    );
-  };
 
-  const clickEdit = (adminItem) => {
-    setPopupEdit(true);
-    dispatch(fetchData(adminItem.id));
-  };
-
-  const clickNav = (page) => {
-    // actions.getListAdmins(page, 5);
+  const clickNav = () => {
   };
 
   const closeAlert = () => {
-    actions.closeAlert();
+    // actions.closeAlert();
   };
 
   const closePopup = () => {
@@ -72,15 +55,12 @@ export default function Order(props) {
 
   const onKeyUpQuery = (e) => {
     if (e.key === 'Enter' && query) {
-      // actions.resetList();
-      // actions.getListAdmins(1, 5, query);
+      //TODO
     }
   };
 
   const resetQuery = () => {
     setQuery('');
-    // actions.resetList();
-    // actions.getListAdmins(1, 5);
   };
 
   const selectPerPage = (size) => {
@@ -88,26 +68,27 @@ export default function Order(props) {
     setOpenPage(false);
   };
 
-  const submit = (value) => {
-    const { email, fullName, password, phoneNumber, repeat, role, status } = value;
-
-    if (checkExist(email) && checkExist(phoneNumber) && checkExist(password)
-      && checkExist(repeat) && checkExist(role) && checkExist(status)
-      && checkExist(fullName)) { }
-    // actions.addEditAdmin(value);
+  const _shipping = (data) => {
+    setPopup(true);
+    setData(data);
   };
+  const _handleChange = (e) => {
+    setResi(e.target.value);
+  };
+
+  const _updateResi = () => {
+    const index = order.map((x) => x.orderId).indexOf(data.orderId);
+    let newOpenLevel = [...order];
+    newOpenLevel[index].orderStatus = 'shipping';
+    dispatch(updateData(newOpenLevel));
+    closePopup();
+  };
+
 
   action = (adminItem) => {
     return (
       <div className="action-wrapper">
-        <Button onClick={clickEdit.bind(null, adminItem)}
-          size="32" variant="secondary" width="84px">
-          <Typography class-name="action-button" tag="label" variant="button">Edit</Typography>
-        </Button>
-        <Button
-          size="32" variant="secondary" width="84px">
-          <Typography class-name="action-button red" tag="label" variant="button">Delete</Typography>
-        </Button>
+        <Button onClick={() => _shipping(adminItem)} size="36" variant="secondary">process</Button>
       </div>
     );
   };
@@ -115,29 +96,40 @@ export default function Order(props) {
   return (
     <React.Fragment>
       <Pagebase>
-        {showAlert && <AlertFragment message={messageAlert} onClose={closeAlert} type={typeAlert} />}
-        {((popup) || (popupEdit && product)) &&
-          <Popup close height={818} onClose={closePopup} width={530}>
-            <Form onCancel={closePopup} onSubmit={submit} /></Popup>}
+        {showAlert &&
+          <AlertFragment message={messageAlert} onClose={closeAlert} type={typeAlert} />}
+        {((popup) || (popupEdit)) &&
+          <Popup close height={218} onClose={closePopup} width={530}>
+            <Typography tag="h5" variant="headline-medium">Update Status</Typography>
+            <div className="resi-wrapper">
+              <div className="text">
+                <Textfield
+                  onChange={_handleChange}
+                  placeholder="Masukkan No Resi"
+                  shadow={false}
+                  type="text"
+                  width={'90%'}
+                />
+              </div>
+              <Button disable={resi === null || resi === ''} onClick={_updateResi} size="48" variant="primary">Update</Button>
+            </div>
+          </Popup>}
         <section className="headline-wrapper">
-          <Typography bold="true" class-name="headline" tag="label" variant="headline-large">Produk</Typography>
-          <Typography class-name="headline-sub" tag="label" variant="headline-small">Atur semua produk disini</Typography>
+          <Typography bold="true" class-name="headline" tag="label" variant="headline-large">Pesanan</Typography>
+          <Typography class-name="headline-sub" tag="label" variant="headline-small">Lihat daftar pesanan disini</Typography>
         </section>
         <section className="page-content">
           <div className="page-content-head">
             <div>
-              <Typography bold="true" tag="label" variant="headline-small">Daftar Produk</Typography>
+              <Typography bold="true" tag="label" variant="headline-small">Daftar Pesanan</Typography>
             </div>
             <div className="page-content-head-right">
               <SearchBox
                 onChange={(e) => { setQuery(e.target.value); }}
                 onKeyUp={onKeyUpQuery}
-                placeholder="Cari nama produk. . ." value={query} width="413px" />
+                placeholder="Cari pesanan. . ." value={query} width="413px" />
               <Typography bold="true" class-name="label-reset"
                 onClick={resetQuery} variant="body">Reset</Typography>
-              {
-                buttonAdd()
-              }
             </div>
           </div>
           <div className="table-wrapper">

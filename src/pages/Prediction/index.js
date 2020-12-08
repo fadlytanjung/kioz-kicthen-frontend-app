@@ -1,30 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import AlertFragment from '../../components/fragments/Alert';
-import Form from '../../components/forms/Product';
 import Pagebase from '../../components/layouts/Pagebase/admin';
 import { useDispatch, useSelector } from 'react-redux';
-import { Button, DataTable, Popup, SearchBox, Typography } from 'leanui-framework/components';
-import { checkExist } from '../../utils/validation';
+import { Button, DataTable, Dropdown, Popup, Textfield, Typography } from 'leanui-framework/components';
+import Chart from '../../components/elements/Chart';
 import { fetchData } from './action';
 import './styles.scss';
 
-export let action = null;
-
-export default function Prediction(props) {
-  const { messageAlert, meta: { page = 1, totalPage = 5 },
+export default function Report(props) {
+  const { messageAlert, meta: { page = 1 },
     showAlert, typeAlert } = props;
 
   const dispatch = useDispatch();
-  const { product } = useSelector(s => s.product);
-  const { detail } = useSelector(s => s.detail);
+  const { prediction } = useSelector(s => s.prediction);
+  const [popup, setPopup] = useState(false);
+  const [value, setValue] = useState('');
+  const [showPredict, setShowpredict] = useState(false);
 
   useEffect(() => {
     dispatch(fetchData());
   }, []);
-
-  const [popup, setPopup] = useState(false);
-  const [popupEdit, setPopupEdit] = useState(false);
   useEffect(() => {
     if (showAlert && popup) {
       setPopup(false);
@@ -32,132 +28,184 @@ export default function Prediction(props) {
   });
 
   const [openPage, setOpenPage] = useState(false);
-  const [query, setQuery] = useState();
   const [size, setSize] = useState(5);
-  const head = ['Id', 'Nama', 'Deskripsi', 'Gambar', 'Harga', 'Stok', 'Unit', 'Diskon', 'Aksi'];
-  const body = product.length > 0 ? [product] : [[]];
+  const head = ['Tanggal', 'Prediksi'];
+  const body = prediction.length > 0 ? [prediction] : [[]];
 
-  const show = ['id', 'name', 'description', 'image', 'price', 'stock', 'unit', 'discount', 'action'];
+  const show = ['date', 'prediction'];
 
-  const buttonAdd = () => {
-    return (
-      <div className="button-search" onClick={() => { setPopup(true); dispatch(fetchData()) }}>
-        <Button
-          disable={false}
-          loading={false}
-          size="50"
-          variant="primary"
-        >Tambah Produk</Button>
-      </div>
-    );
-  };
-
-  const clickEdit = (adminItem) => {
-    setPopupEdit(true);
-    dispatch(fetchData(adminItem.id));
-  };
-
-  const clickNav = (page) => {
+  const clickNav = () => {
     // actions.getListAdmins(page, 5);
   };
 
   const closeAlert = () => {
-    actions.closeAlert();
+    // actions.closeAlert();
   };
 
   const closePopup = () => {
     setPopup(false);
-    setPopupEdit(false);
   };
 
-  const onKeyUpQuery = (e) => {
-    if (e.key === 'Enter' && query) {
-      // actions.resetList();
-      // actions.getListAdmins(1, 5, query);
-    }
-  };
-
-  const resetQuery = () => {
-    setQuery('');
-    // actions.resetList();
-    // actions.getListAdmins(1, 5);
-  };
 
   const selectPerPage = (size) => {
     setSize(size);
     setOpenPage(false);
   };
 
-  const submit = (value) => {
-    const { email, fullName, password, phoneNumber, repeat, role, status } = value;
-
-    if (checkExist(email) && checkExist(phoneNumber) && checkExist(password)
-      && checkExist(repeat) && checkExist(role) && checkExist(status)
-      && checkExist(fullName)) { }
-    // actions.addEditAdmin(value);
+  const handleChange = (e) => {
+    setValue(e.target.value);
   };
 
-  action = (adminItem) => {
-    return (
-      <div className="action-wrapper">
-        <Button onClick={clickEdit.bind(null, adminItem)}
-          size="32" variant="secondary" width="84px">
-          <Typography class-name="action-button" tag="label" variant="button">Edit</Typography>
-        </Button>
-        <Button
-          size="32" variant="secondary" width="84px">
-          <Typography class-name="action-button red" tag="label" variant="button">Delete</Typography>
-        </Button>
-      </div>
-    );
+  const predict = () => {
+    if (Number(value) > 14) {
+      setPopup(true);
+    } else {
+      setShowpredict(true);
+    }
   };
+  const [level, setLevel] = useState(false);
+  const [openLevel, setOpenLevel] = useState(false);
+  const [item, setItem] = useState(
+    [
+      {
+        text: 'Mangga',
+        value: 0,
+        selected: level === 'Mangga',
+      },
+      {
+        text: 'Anggur',
+        value: 1,
+        selected: level === 'Anggur',
+      }
+    ]
+  );
+
+  const handleChangeLevel = (level) => {
+    setLevel(level);
+    setOpenLevel(false);
+    setItem([...item.map(obj => {
+      return obj.value === level ? { ...obj, selected: true } : { ...obj, selected: false };
+    })]);
+  };
+
+  const getLevel = (level) => {
+    switch (level) {
+      case 0:
+        return 'Mangga Manis';
+      case 1:
+        return 'Anggur Merah';
+      default:
+        return 'Select All';
+    }
+  };
+
+  const selectUnit = () => (
+    <React.Fragment>
+      <Dropdown
+        class-name="form-field-select"
+        handleClick={handleChangeLevel}
+        handleOpen={() => { setOpenLevel(!openLevel); }}
+        item={item}
+        label="Produk"
+        open={openLevel}
+        value={getLevel(level)}
+        variant="outline"
+      />
+    </React.Fragment>
+  );
 
   return (
     <React.Fragment>
       <Pagebase>
-        {showAlert && <AlertFragment message={messageAlert} onClose={closeAlert} type={typeAlert} />}
-        {((popup) || (popupEdit && product)) &&
-          <Popup close height={818} onClose={closePopup} width={530}>
-            <Form onCancel={closePopup} onSubmit={submit} /></Popup>}
+        {showAlert &&
+          <AlertFragment message={messageAlert} onClose={closeAlert} type={typeAlert} />}
+        {popup &&
+          <Popup close height={218} onClose={closePopup} width={230}>
+            <Typography tag="h5" variant="headline-medium" >Hanya bisa memprediksi maksimal 14 hari kedepan</Typography>
+          </Popup>}
         <section className="headline-wrapper">
-          <Typography bold="true" class-name="headline" tag="label" variant="headline-large">Produk</Typography>
-          <Typography class-name="headline-sub" tag="label" variant="headline-small">Atur semua produk disini</Typography>
-        </section>
-        <section className="page-content">
-          <div className="page-content-head">
-            <div>
-              <Typography bold="true" tag="label" variant="headline-small">Daftar Produk</Typography>
-            </div>
-            <div className="page-content-head-right">
-              <SearchBox
-                onChange={(e) => { setQuery(e.target.value); }}
-                onKeyUp={onKeyUpQuery}
-                placeholder="Cari nama produk. . ." value={query} width="413px" />
-              <Typography bold="true" class-name="label-reset"
-                onClick={resetQuery} variant="body">Reset</Typography>
-              {
-                buttonAdd()
-              }
-            </div>
-          </div>
-          <div className="table-wrapper">
-            <DataTable currentPage={page}
-              data-body={body} data-head={head}
-              onClickNav={clickNav}
-              onClickPerPage={() => { setOpenPage(!openPage); }}
-              onCLickSelectPerPage={selectPerPage}
-              openPerPage={openPage}
-              show={show} showPerPage={false} showToPage={false}
-              totalPage={totalPage}
-              valuePerPage={size} />
+          <Typography bold="true" class-name="headline" tag="label" variant="headline-large">Prediksi Penjualan Produk</Typography>
+          <Typography class-name="headline-sub" tag="label" variant="headline-small">Prediksi Penjualan Produk Anda</Typography>
+          <div className="date-report">
+            {selectUnit()}
+            <Textfield
+              disabled={false}
+              onChange={handleChange}
+              placeholder="Masukkan Jumlah Hari"
+              shadow={false}
+              type="number"
+              width={212}
+            />
+            <Button
+              disable={(value === '' || value === null) || level === false}
+              loading={false}
+              onClick={predict}
+              size="48"
+              variant="primary"
+            >Prediksi</Button>
           </div>
         </section>
+        {showPredict &&
+          <React.Fragment>
+            <section className="prediction-chart">
+              <Chart
+                data={[
+                  {
+                    date: '09-12-2020',
+                    prediction: 24,
+                  },
+                  {
+                    date: '10-12-2020',
+                    prediction: 26,
+                  },
+                  {
+                    date: '11-12-2020',
+                    prediction: 24,
+                  },
+                  {
+                    date: '12-12-2020',
+                    prediction: 39,
+                  },
+                  {
+                    date: '13-12-2020',
+                    prediction: 27,
+                  }
+                ]}
+                height={300}
+                labelY={[0, 10, 20, 30, 40]}
+                subtitle=""
+                title=""
+                type="line"
+                width={400}
+                xKey="date"
+                yKey="prediction"
+              />
+            </section>
+            <section className="page-content">
+              <div className="page-content-head">
+                <div>
+                  <Typography bold="true" tag="label" variant="headline-small">Hasil Prediksi</Typography>
+                </div>
+              </div>
+              <div className="table-wrapper">
+                <DataTable currentPage={page}
+                  data-body={body} data-head={head}
+                  onClickNav={clickNav}
+                  onClickPerPage={() => { setOpenPage(!openPage); }}
+                  onCLickSelectPerPage={selectPerPage}
+                  openPerPage={openPage}
+                  show={show} showPerPage={false} showToPage={false}
+                  totalPage={1}
+                  valuePerPage={size} />
+              </div>
+            </section>
+          </React.Fragment>}
       </Pagebase>
     </React.Fragment>
   );
 }
 
-Prediction.defaultProps = {
+Report.defaultProps = {
   actions: {},
   admin: {},
   classes: {},
@@ -169,7 +217,7 @@ Prediction.defaultProps = {
   typeAlert: false,
 };
 
-Prediction.propTypes = {
+Report.propTypes = {
   actions: PropTypes.object,
   admin: PropTypes.object,
   classes: PropTypes.object,

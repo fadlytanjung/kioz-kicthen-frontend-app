@@ -1,20 +1,21 @@
-import { ACTIONS } from '../../constants';
+import { ACTIONS } from '../constants';
 
 const initialState = {
-  report: [],
+  order: [],
   detail: {},
 };
 
 export default function reducer(state = initialState, action) {
-  const { type, report, detail } = action;
+  const { type, order, detail } = action;
 
   switch (type) {
-    case ACTIONS.FETCH_REPORTS:
+    case ACTIONS.FETCH_ORDERS:
       return {
         ...state,
-        report,
+       order,
+       detail: {},
       };
-    case ACTIONS.FETCH_REPORT:
+    case ACTIONS.FETCH_ORDER:
       return {
         ...state,
         detail,

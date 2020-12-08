@@ -1,30 +1,20 @@
-import React from 'react';
-import { ACTIONS, product } from '../../constants';
-import { action } from './index';
+import { ACTIONS, prediction } from '../../constants';
 
 export function fetchData(id) {
   return dispatch => {
     if (id) {
       dispatch({
-        type: ACTIONS.FETCH_PRODUCT,
-        detail: { ...product.filter(el => el.id === id)[0] }
-      })
+        type: ACTIONS.FETCH_REPORT,
+        detail: { ...prediction.filter(el => el.predictionId === id)[0] }
+      });
     } else {
       dispatch({
-        type: ACTIONS.FETCH_PRODUCT,
+        type: ACTIONS.FETCH_REPORT,
         detail: {},
       });
       dispatch({
-        type: ACTIONS.FETCH_PRODUCTS,
-        product: [...product.map(obj => {
-          delete obj['display_price'];
-          delete obj['display_full_price'];
-          return {
-            ...obj,
-            image: <img src={obj.image} />,
-            action: action(obj)
-          }
-        }),]
+        type: ACTIONS.FETCH_PREDICTIONS,
+        prediction: [...prediction]
       });
     }
   };

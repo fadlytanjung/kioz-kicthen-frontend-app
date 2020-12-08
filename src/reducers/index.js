@@ -5,7 +5,10 @@ import auth from './auth';
 import cart from './cart';
 import detail from '../pages/Detail/reducer';
 import loading from './loading';
+import order from './order';
+import prediction from '../pages/Prediction/reducer';
 import product from '../pages/Home/reducer';
+import report from '../pages/Report/reducer';
 import user from './user';
 
 const rootReducer = combineReducers({
@@ -14,7 +17,10 @@ const rootReducer = combineReducers({
   detail,
   loading,                                                                                                               
   form: formReducer,
+  order,
+  prediction,
   product,
+  report,
   routing: routerReducer,
   user,
 });

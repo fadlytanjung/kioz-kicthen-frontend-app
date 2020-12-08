@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Field, change } from 'redux-form';
 import PropTypes from 'prop-types';
 import { Button, Dropdown, Textfield, Typography } from 'leanui-framework/components';
-import { match, required } from '../../../utils/validation';
+import { required } from '../../../utils/validation';
 import './style.css';
 
 const renderTextfield = (props) => {
@@ -38,7 +38,7 @@ export default function Product(props) {
     setOpenLevel(false);
     setItem([...item.map(obj => {
       return obj.value === level ? { ...obj, selected: true } : { ...obj, selected: false };
-    })])
+    })]);
     dispatch(change('user', 'role', getLevel(level)));
   };
 
@@ -113,6 +113,7 @@ export default function Product(props) {
 
 Product.defaultProps = {
   dispatch: () => { },
+  formValues: { },
   handleSubmit: () => { },
   input: { },
   meta: { },
@@ -122,6 +123,7 @@ Product.defaultProps = {
 
 Product.propTypes = {
   dispatch: PropTypes.func,
+  formValues: PropTypes.object,
   handleSubmit: PropTypes.func,
   input: PropTypes.object,
   meta: PropTypes.object,

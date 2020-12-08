@@ -1,30 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import AlertFragment from '../../components/fragments/Alert';
-import Form from '../../components/forms/Product';
 import Pagebase from '../../components/layouts/Pagebase/admin';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, DataTable, Popup, SearchBox, Typography } from 'leanui-framework/components';
-import { checkExist } from '../../utils/validation';
+import Datepicker from './Datepicker';
 import { fetchData } from './action';
 import './styles.scss';
-
-export let action = null;
 
 export default function Report(props) {
   const { messageAlert, meta: { page = 1, totalPage = 5 },
     showAlert, typeAlert } = props;
 
   const dispatch = useDispatch();
-  const { product } = useSelector(s => s.product);
-  const { detail } = useSelector(s => s.detail);
+  const { report } = useSelector(s => s.report);
+  const [popup, setPopup] = useState(false);
+  const [value, setValue] = useState('');
+  const [showDate, setShowDate] = useState(false);
+
+  const [value2, setValue2] = useState('');
+  const [showDate2, setShowDate2] = useState(false);
+
+  const [table, setTable] = useState(false);
 
   useEffect(() => {
     dispatch(fetchData());
   }, []);
-
-  const [popup, setPopup] = useState(false);
-  const [popupEdit, setPopupEdit] = useState(false);
   useEffect(() => {
     if (showAlert && popup) {
       setPopup(false);
@@ -34,53 +35,44 @@ export default function Report(props) {
   const [openPage, setOpenPage] = useState(false);
   const [query, setQuery] = useState();
   const [size, setSize] = useState(5);
-  const head = ['Id', 'Nama', 'Deskripsi', 'Gambar', 'Harga', 'Stok', 'Unit', 'Diskon', 'Aksi'];
-  const body = product.length > 0 ? [product] : [[]];
+  const head = ['Id Transaksi', 'Tanggal', 'Id Pesanan', 'User', 'Total', 'Status'];
+  const body = report.length > 0 ? [report] : [[]];
 
-  const show = ['id', 'name', 'description', 'image', 'price', 'stock', 'unit', 'discount', 'action'];
+  const show = ['transactionId', 'date', 'orderId', 'user', 'amount', 'status'];
 
   const buttonAdd = () => {
     return (
-      <div className="button-search" onClick={() => { setPopup(true); dispatch(fetchData()) }}>
+      <div className="button-search" onClick={() => {}}>
         <Button
           disable={false}
           loading={false}
           size="50"
           variant="primary"
-        >Tambah Produk</Button>
+        >Download Data</Button>
       </div>
     );
   };
 
-  const clickEdit = (adminItem) => {
-    setPopupEdit(true);
-    dispatch(fetchData(adminItem.id));
-  };
-
-  const clickNav = (page) => {
+  const clickNav = () => {
     // actions.getListAdmins(page, 5);
   };
 
   const closeAlert = () => {
-    actions.closeAlert();
+    // actions.closeAlert();
   };
 
   const closePopup = () => {
     setPopup(false);
-    setPopupEdit(false);
   };
 
   const onKeyUpQuery = (e) => {
     if (e.key === 'Enter' && query) {
-      // actions.resetList();
-      // actions.getListAdmins(1, 5, query);
+      //TODO
     }
   };
 
   const resetQuery = () => {
     setQuery('');
-    // actions.resetList();
-    // actions.getListAdmins(1, 5);
   };
 
   const selectPerPage = (size) => {
@@ -88,51 +80,58 @@ export default function Report(props) {
     setOpenPage(false);
   };
 
-  const submit = (value) => {
-    const { email, fullName, password, phoneNumber, repeat, role, status } = value;
-
-    if (checkExist(email) && checkExist(phoneNumber) && checkExist(password)
-      && checkExist(repeat) && checkExist(role) && checkExist(status)
-      && checkExist(fullName)) { }
-    // actions.addEditAdmin(value);
+  const handleChange = (e) =>{
+    setValue(e);
   };
 
-  action = (adminItem) => {
-    return (
-      <div className="action-wrapper">
-        <Button onClick={clickEdit.bind(null, adminItem)}
-          size="32" variant="secondary" width="84px">
-          <Typography class-name="action-button" tag="label" variant="button">Edit</Typography>
-        </Button>
-        <Button
-          size="32" variant="secondary" width="84px">
-          <Typography class-name="action-button red" tag="label" variant="button">Delete</Typography>
-        </Button>
-      </div>
-    );
+  const handleShow = () =>{
+    setShowDate(!showDate);
   };
+
+  const handleChange2 = (e) => {
+    setValue2(e);
+  };
+
+  const handleShow2 = () => {
+    setShowDate2(!showDate2);
+  };
+
+  const resultReport = () => setTable(true);
 
   return (
     <React.Fragment>
       <Pagebase>
-        {showAlert && <AlertFragment message={messageAlert} onClose={closeAlert} type={typeAlert} />}
-        {((popup) || (popupEdit && product)) &&
-          <Popup close height={818} onClose={closePopup} width={530}>
-            <Form onCancel={closePopup} onSubmit={submit} /></Popup>}
+        {showAlert &&
+          <AlertFragment message={messageAlert} onClose={closeAlert} type={typeAlert} />}
+        {popup &&
+          <Popup close height={818} onClose={closePopup} width={530} />}
         <section className="headline-wrapper">
-          <Typography bold="true" class-name="headline" tag="label" variant="headline-large">Produk</Typography>
-          <Typography class-name="headline-sub" tag="label" variant="headline-small">Atur semua produk disini</Typography>
+          <Typography bold="true" class-name="headline" tag="label" variant="headline-large">Laporan</Typography>
+          <Typography class-name="headline-sub" tag="label" variant="headline-small">Download Laporan Penjualan Anda</Typography>
+          <div className="date-report">
+            <Datepicker handleShow={handleShow} onChange={handleChange} show={showDate} title="Start Date" value={value} />
+            <Typography tag="h5" variant="headline-medium">-</Typography>
+            <Datepicker handleShow={handleShow2} onChange={handleChange2} show={showDate2} title="End Date" value={value2} />
+            <Button
+              disable={false}
+              loading={false}
+              onClick={resultReport}
+              size="48"
+              variant="primary"
+            >Process</Button>
+          </div>
         </section>
+        {table &&
         <section className="page-content">
           <div className="page-content-head">
             <div>
-              <Typography bold="true" tag="label" variant="headline-small">Daftar Produk</Typography>
+              <Typography bold="true" tag="label" variant="headline-small">Daftar Transaksi</Typography>
             </div>
             <div className="page-content-head-right">
               <SearchBox
                 onChange={(e) => { setQuery(e.target.value); }}
                 onKeyUp={onKeyUpQuery}
-                placeholder="Cari nama produk. . ." value={query} width="413px" />
+                placeholder="Cari transaksi. . ." value={query} width="413px" />
               <Typography bold="true" class-name="label-reset"
                 onClick={resetQuery} variant="body">Reset</Typography>
               {
@@ -151,7 +150,7 @@ export default function Report(props) {
               totalPage={totalPage}
               valuePerPage={size} />
           </div>
-        </section>
+        </section>}
       </Pagebase>
     </React.Fragment>
   );

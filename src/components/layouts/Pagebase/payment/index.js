@@ -13,7 +13,7 @@ function Pagebase(props) {
       <div className="header-payment">
         <div className="container-small">
           {back && <img onClick={prev} src={IMAGES.arrowLeft} />}
-          <img onClick={back==false ? ()=>history.push('/') : null }src={IMAGES.logoWhite} style={{ position:'relative' }} />
+          <img onClick={back === false ? () => history.push('/') : null} src={IMAGES.logoWhite} style={{ position: 'relative' }} />
         </div>
       </div>
       {props.children}
