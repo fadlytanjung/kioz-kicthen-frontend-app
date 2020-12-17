@@ -94,6 +94,10 @@ export default function Product(props) {
           validate={[required]} width="inherit" />
       </div>
       <div className="form-field">
+        <label style={{ fontSize: 14 }}>Image</label><br />
+        <input accept="image/*" name="image" type="file" />
+      </div>
+      <div className="form-field">
         <Field component={renderTextfield} name="stock" placeholder="Isi Stok" title="Stok" type="number"
           validate={[required]} width="inherit" />
       </div>

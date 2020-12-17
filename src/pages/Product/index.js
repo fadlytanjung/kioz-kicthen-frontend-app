@@ -117,7 +117,7 @@ export default function Product(props) {
         {showAlert &&
           <AlertFragment message={messageAlert} onClose={closeAlert} type={typeAlert} />}
         {((popup) || (popupEdit && product)) &&
-          <Popup close height={818} onClose={closePopup} width={530}>
+          <Popup close height={888} onClose={closePopup} width={530}>
             <Form onCancel={closePopup} onSubmit={submit} /></Popup>}
         <section className="headline-wrapper">
           <Typography bold="true" class-name="headline" tag="label" variant="headline-large">Produk</Typography>

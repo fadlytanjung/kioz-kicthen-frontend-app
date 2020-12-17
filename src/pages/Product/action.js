@@ -21,7 +21,7 @@ export function fetchData(id) {
           delete obj['display_full_price'];
           return {
             ...obj,
-            image: <img src={obj.image} />,
+            image: <img src={obj.image} style={{ objectFit:'cover', height:150, width:150 }}/>,
             action: action(obj)
           };
         })]
